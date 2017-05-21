@@ -29,7 +29,7 @@ func HandleUserCreate(w http.ResponseWriter, r *http.Request, _ httprouter.Param
 		panic(err)
 	}
 
-	err = globalUserStore.Save(user)
+	err = globalUserStore.Save(&user)
 	if err != nil {
 		panic(err)
 	}
@@ -37,6 +37,7 @@ func HandleUserCreate(w http.ResponseWriter, r *http.Request, _ httprouter.Param
 	// Create a new session
 	session := NewSession(w)
 	session.UserID = user.ID
+	fmt.Println("session user id: ", session.UserID)
 	fmt.Println("this is the session  ", *session)
 	err = globalSessionStore.Save(session)
 	if err != nil {
@@ -71,7 +72,8 @@ func HandleUserUpdate(w http.ResponseWriter, r *http.Request, _ httprouter.Param
 		panic(err)
 	}
 
-	err = globalUserStore.Save(*currentUser)
+	// TODO: investigate this to make sure it doesn't just insert a new record
+	err = globalUserStore.Save(currentUser)
 	if err != nil {
 		panic(err)
 	}

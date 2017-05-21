@@ -4,13 +4,14 @@ import (
 	"database/sql"
 	"log"
 	"time"
+	"fmt"
 )
 
 type UserStore interface {
 	Find(int) (*User, error)
 	FindByEmail(string) (*User, error)
 	FindByUsername(string) (*User, error)
-	Save(User) error
+	Save(*User) error
 }
 
 type DBUserStore struct {
@@ -23,7 +24,9 @@ func NewDBUserStore(db *sql.DB) (*DBUserStore) {
 	return &DBUserStore{db: db}
 }
 
-func (store DBUserStore) Save(user User) error {
+func (store DBUserStore) Save(user *User) error {
+	fmt.Println("length of hashed passwd: ", len(user.HashedPassword))
+
 	rows, err := store.db.Query(
 		`INSERT INTO usr
 		(username, email, hashed_password, created_at, modified_at)
@@ -90,31 +93,27 @@ func (store DBUserStore) FindByEmail(email string) (*User, error) {
 	}
 
 	var usr User
-	rows, err := store.db.Query(
+	row := store.db.QueryRow(
 		`SELECT id, username, email, hashed_password, created_at, modified_at
 		FROM usr
 		WHERE email = $1`,
 		email,
 	)
-	if err != nil {
-		log.Println(err)
-		return nil, err
+
+	err := row.Scan(
+		&usr.ID,
+		&usr.Username,
+		&usr.Email,
+		&usr.HashedPassword,
+		&usr.CreatedAt,
+		&usr.ModifiedAt,
+	)
+	if err.Error() == "sql: no rows in result set" {
+		return nil, nil
 	}
 
-	defer rows.Close()
-	for rows.Next() {
-		err = rows.Scan(
-			&usr.ID,
-			&usr.Username,
-			&usr.Email,
-			&usr.HashedPassword,
-			&usr.CreatedAt,
-			&usr.ModifiedAt,
-		)
-		if err != nil {
-			log.Println(err)
-			return nil, err
-		}
+	if err != nil {
+		return nil, err
 	}
 
 	return &usr, nil
@@ -125,35 +124,31 @@ func (store DBUserStore) FindByUsername(username string) (*User, error) {
 		return nil, nil
 	}
 
-	var usr User
-	rows, err := store.db.Query(
+	row := store.db.QueryRow(
 		`SELECT id, username, email, hashed_password, created_at, modified_at
 		FROM usr
 		WHERE username = $1`,
 		username,
 	)
+
+	usr := &User{}
+	err := row.Scan(
+		&usr.ID,
+		&usr.Username,
+		&usr.Email,
+		&usr.HashedPassword,
+		&usr.CreatedAt,
+		&usr.ModifiedAt,
+	)
+	if err.Error() == "sql: no rows in result set" {
+		return nil, nil
+	}
+
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
-	defer rows.Close()
-	for rows.Next() {
-		err = rows.Scan(
-			&usr.ID,
-			&usr.Username,
-			&usr.Email,
-			&usr.HashedPassword,
-			&usr.CreatedAt,
-			&usr.ModifiedAt,
-		)
-		if err != nil {
-			log.Println(err)
-			return nil, err
-		}
-	}
-
-	return &usr, nil
+	return usr, nil
 }
 
 
