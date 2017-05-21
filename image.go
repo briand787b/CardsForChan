@@ -17,7 +17,7 @@ type Image struct {
 type ImageStore interface {
 	Find(id int) (*Image, error)
 	FindAll(offset int) ([]Image, error)
-	FindAllByUser(user *User, offset int) ([]Image, error)
+	// FindAllByUser(user *User, offset int) ([]Image, error)
 }
 
 

@@ -18,8 +18,6 @@ func init() {
 		panic(err)
 	}
 
-	defer globalPgDB.Close()
-
 	// User store initialization
 	globalUserStore = NewDBUserStore(globalPgDB)
 
@@ -31,6 +29,7 @@ func init() {
 }
 
 func main() {
+	defer globalPgDB.Close()
 	router := NewRouter()
 
 	router.Handle("GET", "/", HandleHome)

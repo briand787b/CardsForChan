@@ -98,13 +98,7 @@ func HandleUserShow(w http.ResponseWriter, r *http.Request, params httprouter.Pa
 		return
 	}
 
-	images, err := globalImageStore.FindAllByUser(user, 0)
-	if err != nil {
-		panic(err)
-	}
-
 	RenderTemplate(w, r, "users/show", map[string]interface{}{
 		"User": user,
-		"Images": images,
 	})
 }
