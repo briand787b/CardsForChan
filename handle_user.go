@@ -85,7 +85,7 @@ func HandleUserShow(w http.ResponseWriter, r *http.Request, params httprouter.Pa
 	userIDStr := params.ByName("userID")
 	userID, err := strconv.Atoi(userIDStr)
 	if err != nil {
-		// need to change this to BAD REQUEST, not NOT FOUND later
+		// TODO: need to change this to BAD REQUEST, not NOT FOUND later
 		http.NotFound(w, r)
 		return
 	}

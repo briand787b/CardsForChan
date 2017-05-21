@@ -15,7 +15,7 @@ type Session struct {
 const (
 	// Keep users logged in for 3 days
 	sessionLength 		= 24 * 3 * time.Hour
-	sessionCookieName	= "GophrSession"
+	sessionCookieName	= "CFCSession"
 	sessionIDLength		= 20
 )
 
