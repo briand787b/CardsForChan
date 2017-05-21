@@ -26,6 +26,12 @@ func init() {
 
 	// Image store initialization
 	globalImageStore = NewDBImageStore(globalPgDB)
+
+	// Game store initialization
+	globalGameStore = NewDBGameStore(globalPgDB)
+
+	// Player store initialization
+	globalPlayerStore = NewDBPlayerStore(globalPgDB)
 }
 
 func main() {
