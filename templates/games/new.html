@@ -1,0 +1,24 @@
+{{define "games/new"}}
+<div class="col-md-6 col-md-offset-3">
+    <h1>Create Game</h1>
+    {{if .Error}}
+    <p class="text-danger">
+        {{.Error}}
+    </p>
+    {{end}}
+    <form action="/games/new" method="POST">
+        <div class="form-group">
+            <label for="newGameName">Username</label>
+            <input type="text" name="gameName" value="{{.Game.Name}}"
+                   id="newGameName" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="newPlayerName">Email</label>
+            <input type="text" name="playerName" value="{{.Player.Name}}"
+                   id="newPlayerName" class="form-control">
+        </div>
+        <!-- Need to make a place here to add players to invite -->
+        <input type="submit" value="Register" class="btn btn-primary">
+    </form>
+</div>
+{{end}}

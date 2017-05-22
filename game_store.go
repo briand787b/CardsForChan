@@ -9,6 +9,7 @@ type GameStore interface {
 	Save(*Game) error
 	Find(int) (*Game, error)
 	Delete(int) error
+	SetAdmin(int, int) error
 }
 
 type DBGameStore struct {
@@ -80,4 +81,18 @@ func (store *DBGameStore) Delete(id int) error {
 	}
 
 	return nil
+}
+
+func (store *DBGameStore) SetAdmin(gameID, playerID int) error {
+	var updatedID int
+	err := store.db.QueryRow(`
+		UPDATE game
+		SET admin_player_id = $1
+		WHERE id = $2
+		RETURNING id;`,
+		playerID,
+		gameID,
+	).Scan(&updatedID)
+
+	return err
 }
