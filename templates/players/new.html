@@ -1,0 +1,20 @@
+<!-- This is the form for for someone joining a game -->
+{{define "players/new"}}
+<div class="col-md-6 col-md-offset-3">
+    <h1>Join Game</h1>
+    {{if .Error}}
+    <p class="text-danger">
+        {{.Error}}
+    </p>
+    {{end}}
+    <!-- Get user info (if any) from session cookie -->
+    <form action="/players/new" method="POST">
+        <div class="form-group">
+            <label for="newPlayerName">Email</label>
+            <input type="text" name="playerName" value="{{.Player.Name}}"
+                   id="newPlayerName" class="form-control">
+        </div>
+        <input type="submit" value="Join" class="btn btn-primary">
+    </form>
+</div>
+{{end}}
