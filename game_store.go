@@ -25,11 +25,12 @@ func (store *DBGameStore) Save(game *Game) error {
 	row := store.db.QueryRow(
 		`
 		INSERT INTO game
-		(name, created_at)
+		(name, is_active, created_at)
 		VALUES
-		($1, $2)
+		($1, $2, $3)
 		RETURNING id;`,
 		game.Name,
+		true,
 		time.Now(),
 	)
 
@@ -43,7 +44,7 @@ func (store *DBGameStore) Save(game *Game) error {
 
 func (store *DBGameStore) Find(id int) (*Game, error) {
 	row := store.db.QueryRow(`
-		SELECT id, name, created_at
+		SELECT id, name, admin_player_id, is_active, created_at
 		FROM game
 		WHERE id = $1;`,
 		id,
@@ -53,6 +54,8 @@ func (store *DBGameStore) Find(id int) (*Game, error) {
 	err := row.Scan(
 		&game.ID,
 		&game.Name,
+		&game.AdminPlayerID,
+		&game.IsActive,
 		&game.CreatedAt,
 	)
 	if err != nil {
