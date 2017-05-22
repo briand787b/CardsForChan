@@ -60,6 +60,8 @@ func main() {
 	secureRouter.Handle("GET", "/sign-out", HandleSessionDestroy)
 	secureRouter.Handle("GET", "/account", HandleUserEdit)
 	secureRouter.Handle("POST", "/account", HandleUserUpdate)
+	secureRouter.Handle("GET", "/games/new", HandleGameNew)
+	secureRouter.Handle("POST", "/games/new", HandleGameCreate)
 
 	middleware := middleware.Middleware{}
 	middleware.Add(router)
