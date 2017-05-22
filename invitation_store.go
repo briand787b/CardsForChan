@@ -5,7 +5,7 @@ import "database/sql"
 type InvitationStore interface {
 	Save(*Invitation) error
 	Find(string) (*Invitation, error)
-	Revoke(string) error
+	Delete(string) error
 }
 
 var globalInvitationStore InvitationStore
@@ -22,12 +22,11 @@ func (store *DBInvitationStore) Save(inv *Invitation) error {
 	var id string
 	err := store.db.QueryRow(`
 		INSERT INTO invitation
-		(id, is_revoked, expiry)
+		(id, expiry)
 		VALUES
-		($1, $2, $3)
+		($1, $2)
 		RETURNING id;`,
 		inv.ID,
-		inv.IsRevoked,
 		inv.Expiry,
 	).Scan(&id)
 
@@ -37,11 +36,11 @@ func (store *DBInvitationStore) Save(inv *Invitation) error {
 func (store *DBInvitationStore) Find(id string) (*Invitation, error) {
 	invitation := &Invitation{}
 	err := store.db.QueryRow(`
-		SELECT id, is_revoked, expiry
+		SELECT id, expiry
 		FROM invitation
 		WHERE id = $1;`,
 		id,
-	).Scan(&invitation)
+	).Scan(&invitation.ID, &invitation.Expiry)
 
 	if err.Error() == "sql: no rows in result set" {
 		return nil, nil
@@ -54,9 +53,12 @@ func (store *DBInvitationStore) Find(id string) (*Invitation, error) {
 	return invitation, nil
 }
 
-func (store *DBInvitationStore) Revoke(id string) error {
-	return nil
+func (store *DBInvitationStore) Delete(id string) error {
+	_, err := store.db.Query(`
+		DELETE FROM invitation
+		WHERE id = $1;`,
+		id,
+	)
+
+	return err
 }
-
-
-

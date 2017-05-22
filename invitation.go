@@ -12,7 +12,6 @@ import (
 //TODO: Implement in the database
 type Invitation struct {
 	ID	 	string
-	IsRevoked	bool
 	Expiry 		time.Time
 }
 
