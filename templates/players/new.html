@@ -13,6 +13,10 @@
             <label for="newPlayerName">Email</label>
             <input type="text" name="playerName" value="{{.Player.Name}}"
                    id="newPlayerName" class="form-control">
+            <input type="hidden" name="gameID" value="{{.Player.GameID}}"
+                   id="newPlayerGameID" class="hidden">
+            <input type="hidden" name="invitationID" value="{{.Player.InvitationID}}"
+                   id="newPlayerInvitationID" class="hidden">
         </div>
         <input type="submit" value="Join" class="btn btn-primary">
     </form>

@@ -6,5 +6,6 @@ type Player struct {
 	GameID	int
 	Name 	string
 	UserID 	int
+	InvitationId string
 }
 

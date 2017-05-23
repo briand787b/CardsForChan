@@ -25,3 +25,11 @@ func HandleGameCreate(w http.ResponseWriter, r *http.Request, _ httprouter.Param
 	gameURL := fmt.Sprint("/games/", game.ID)
 	http.Redirect(w, r, gameURL, http.StatusFound)
 }
+
+func HandleGameShow(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+
+}
+
+func HandleGameAnonPlayerShow(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+
+}

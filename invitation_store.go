@@ -5,7 +5,7 @@ import "database/sql"
 type InvitationStore interface {
 	Save(*Invitation) error
 	Find(string) (*Invitation, error)
-	Delete(string) error
+	Delete(*Invitation) error
 }
 
 var globalInvitationStore InvitationStore
@@ -53,11 +53,11 @@ func (store *DBInvitationStore) Find(id string) (*Invitation, error) {
 	return invitation, nil
 }
 
-func (store *DBInvitationStore) Delete(id string) error {
+func (store *DBInvitationStore) Delete(inv *Invitation) error {
 	_, err := store.db.Query(`
 		DELETE FROM invitation
 		WHERE id = $1;`,
-		id,
+		inv.ID,
 	)
 
 	return err
