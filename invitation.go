@@ -10,11 +10,13 @@ import (
 
 // Only the game's admin can invite someone to the game
 //TODO: Implement in the database
+//TODO: If it is implemented in database, add field received_usr_id
 type Invitation struct {
-	ID	 	string
-	Expiry 		time.Time
-	GameID		int
-	UserId		int
+	ID             string
+	Expiry         time.Time
+	GameID         int
+	SenderUserID   int
+	ReceiverUserID int
 }
 
 const (
@@ -42,4 +44,16 @@ func FindInvitation(id string) (*Invitation, error) {
 	}
 
 	return inv, nil
+}
+
+func (invitation *Invitation) IsValidReceiver(user *User) bool {
+	if invitation.ReceiverUserID == 0 {
+		return true
+	}
+
+	if user == nil {
+		return false
+	}
+
+	return invitation.ReceiverUserID == user.ID
 }

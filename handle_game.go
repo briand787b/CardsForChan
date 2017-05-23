@@ -27,9 +27,9 @@ func HandleGameCreate(w http.ResponseWriter, r *http.Request, _ httprouter.Param
 }
 
 func HandleGameShow(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-
+	// this handler is for users only
 }
 
 func HandleGameAnonPlayerShow(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-
+	// this handler extracts the player id from the url, so non-users can play
 }
