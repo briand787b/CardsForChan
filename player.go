@@ -2,7 +2,6 @@ package main
 
 import "errors"
 
-//TODO: Implement InvitationID in database schema: invitation_id CHAR(n) UNIQUE REFERENCES invitation(id)
 type Player struct {
 	ID 	int
 	GameID	int
@@ -55,3 +54,6 @@ func NewPlayer(gameID int, user *User, name, invitationID string, ) (*Player, er
 	return player, globalPlayerStore.SaveWithUser(player)
 }
 
+func SaveGameAdmin(player *Player) error {
+	return globalPlayerStore.SaveAdmin(player)
+}

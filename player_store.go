@@ -5,6 +5,7 @@ import "database/sql"
 type PlayerStore interface {
 	SaveWithUser(*Player) error
 	SaveWithoutUser(*Player) error
+	SaveAdmin(*Player) error
 	Find(int) (*Player, error)
 }
 
@@ -57,6 +58,21 @@ func (store *DBPlayerStore) SaveWithoutUser(player *Player) error {
 	return nil
 }
 
+func (store *DBPlayerStore) SaveAdmin(player *Player) error {
+	err := store.db.QueryRow(`
+		INSERT INTO player
+		(name, game_id, usr_id)
+		VALUES
+		($1, $2, $3)
+		RETURNING id;`,
+		player.Name,
+		player.GameID,
+		player.UserID,
+	).Scan(&player.ID)
+
+	return err
+}
+
 func (store *DBPlayerStore) Find(id int) (*Player, error) {
 	player := &Player{}
 	err := store.db.QueryRow(`
@@ -72,3 +88,4 @@ func (store *DBPlayerStore) Find(id int) (*Player, error) {
 
 	return player, nil
 }
+

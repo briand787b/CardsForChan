@@ -9,8 +9,6 @@ import (
 )
 
 // Only the game's admin can invite someone to the game
-//TODO: Implement in the database
-//TODO: If it is implemented in database, add field received_usr_id
 type Invitation struct {
 	ID             string
 	Expiry         time.Time

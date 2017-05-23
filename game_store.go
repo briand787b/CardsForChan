@@ -61,7 +61,7 @@ func (store *DBGameStore) Find(id int) (*Game, error) {
 	)
 
 	if err.Error() == "sql: no rows in result set" {
-		return nil, ErrGameNotFound
+		return nil, nil
 	}
 
 	if err != nil {

@@ -42,10 +42,11 @@ func NewGame(gameName, playerName string, userId int) (*Game, error) {
 		UserID: user.ID,
 	}
 
-	err = globalPlayerStore.Save(player)
+	err = SaveGameAdmin(player)
 	if err != nil {
 		return nil, err
 	}
+
 
 	err = globalGameStore.SetAdmin(game.ID, player.ID)
 	if err != nil {
@@ -80,17 +81,17 @@ func DeleteGame(game *Game) error {
 	return globalGameStore.Delete(game)
 }
 
-func (game *Game) ValidateUser() {
-
-}
-
-func (game *Game) IsValidUser() bool {
-
-}
-
-func (game *Game) IsValidPlayer() bool {
-
-}
+//func (game *Game) ValidateUser() {
+//
+//}
+//
+//func (game *Game) IsValidUser() bool {
+//
+//}
+//
+//func (game *Game) IsValidPlayer() bool {
+//
+//}
 
 func ShowGameByUser(gameID, userID int) (*Game, error){
 	_, err := FindGameUser(gameID, userID)
@@ -98,5 +99,5 @@ func ShowGameByUser(gameID, userID int) (*Game, error){
 		return nil, err
 	}
 
-
+	return nil, nil
 }

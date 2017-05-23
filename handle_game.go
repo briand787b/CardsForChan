@@ -19,12 +19,13 @@ func HandleGameCreate(w http.ResponseWriter, r *http.Request, _ httprouter.Param
 	game, err := NewGame(gameName, playerName, user.ID)
 	if err != nil {
 		RenderTemplate(w, r, "games/new", map[string]interface{}{
+			"error": err,
 			"gameName": gameName,
 			"playerName": playerName,
 		})
 	}
 
-	gameURL := fmt.Sprint("/games/", game.ID)
+	gameURL := fmt.Sprint("/games/play", game.ID)
 	http.Redirect(w, r, gameURL, http.StatusFound)
 }
 

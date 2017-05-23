@@ -1,5 +1,8 @@
 <!-- Show all active games on this page -->
 {{define "games/show"}}
+    {{if .Error}}
+        <span class="text-danger"><h3>{{.Error}}</h3></span>
+    {{end}}
     {{range $index, $value := .}}
 
     {{end}}

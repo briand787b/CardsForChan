@@ -22,7 +22,7 @@ func HandleInvitationConsume(w http.ResponseWriter, r *http.Request, params http
 	// unique constraint in the database
 	player := &Player{
 		GameID: invitation.GameID,
-		InvitationId: invitation.ID,
+		InvitationID: invitation.ID,
 	}
 
 	RenderTemplate(w, r, "players/new", map[string]interface{}{

@@ -9,12 +9,12 @@
     <form action="/games/new" method="POST">
         <div class="form-group">
             <label for="newGameName">Your game's name</label>
-            <input type="text" name="gameName" value="{{.Game.Name}}"
+            <input type="text" name="gameName" value="{{.gameName}}"
                    id="newGameName" class="form-control">
         </div>
         <div class="form-group">
             <label for="newPlayerName">Your player's name</label>
-            <input type="text" name="playerName" value="{{.Player.Name}}"
+            <input type="text" name="playerName" value="{{.playerName}}"
                    id="newPlayerName" class="form-control">
         </div>
         <!-- Need to make a place here to add players to invite -->
