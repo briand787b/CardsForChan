@@ -30,5 +30,5 @@ func HandlePlayerCreate(w http.ResponseWriter, r *http.Request, _ httprouter.Par
 		InvitationId: r.FormValue("invitationID"),
 	}
 
-	
+
 }
