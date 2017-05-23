@@ -2,6 +2,7 @@ package main
 
 import (
 	"time"
+	"errors"
 )
 
 type Game struct {
@@ -69,7 +70,7 @@ func FindGame(id int) (*Game, error) {
 		panic(err)
 	}
 
-	return nil, ErrGameInactive
+	return nil, errors.New("Game is inactive")
 }
 
 func DeleteGame(game *Game) error {
@@ -77,4 +78,16 @@ func DeleteGame(game *Game) error {
 	// It's redundant to have two deletes that take a pointer to
 	// a game.
 	return globalGameStore.Delete(game)
+}
+
+func (game *Game) ValidateUser() {
+
+}
+
+func (game *Game) IsValidUser() bool {
+
+}
+
+func (game *Game) IsValidPlayer() bool {
+
 }

@@ -25,9 +25,7 @@ func HandlePlayerCreate(w http.ResponseWriter, r *http.Request, _ httprouter.Par
 		return
 	}
 
-	// get userID
 	user := RequestUser(r)
-
 	player, err := NewPlayer(gameID, user, r.FormValue("name"), r.FormValue("invitationID"))
 	if validation.IsValidationError(err) {
 		RenderTemplate(w, r, "players/new", map[string]interface{}{

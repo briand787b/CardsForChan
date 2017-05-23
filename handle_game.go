@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"github.com/julienschmidt/httprouter"
 	"fmt"
+	"strconv"
+	"errors"
 )
 
 func HandleGameNew(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
@@ -28,8 +30,35 @@ func HandleGameCreate(w http.ResponseWriter, r *http.Request, _ httprouter.Param
 
 func HandleGameShow(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	// this handler is for users only
+	gameID, err := strconv.Atoi(params.ByName("gameID"))
+	if err != nil {
+		// TODO: make this a bad request instead of a not found
+		http.NotFound(w, r)
+		return
+	}
+
+	playerIDParam := params.ByName("playerID")
+	if playerIDParam == "" {
+		user := RequestUser(r)
+		if user == nil {
+			RenderTemplate(w, r, "games/show", map[string]interface{}{
+				"error": errors.New("Unable to find user"),
+			})
+		}
+
+		HandleGameShowWithUser(w, gameID, user.ID)
+		return
+	}
+
+
+	HandleGameShowWithNonUser(w, gameID, playerIDParam)
 }
 
-func HandleGameAnonPlayerShow(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-	// this handler extracts the player id from the url, so non-users can play
+
+func HandleGameShowWithUser(w http.ResponseWriter, gameID, userID int) {
+
+}
+
+func HandleGameShowWithNonUser(w http.ResponseWriter, gameID, userID int) {
+
 }
