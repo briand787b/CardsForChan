@@ -8,7 +8,7 @@ import (
 // Source String used when generating a random identifier.
 const idSource = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 
-// Save the length in a constant so we don't look it up each time
+// SaveWithUser the length in a constant so we don't look it up each time
 const idSourceLen = byte(len(idSource))
 
 // GenerateID creates a prefixed random identifier.

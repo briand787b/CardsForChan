@@ -8,7 +8,7 @@ import (
 type GameStore interface {
 	Save(*Game) error
 	Find(int) (*Game, error)
-	Delete(int) error
+	Delete(*Game) error
 	SetAdmin(int, int) error
 }
 
@@ -59,6 +59,11 @@ func (store *DBGameStore) Find(id int) (*Game, error) {
 		&game.IsActive,
 		&game.CreatedAt,
 	)
+
+	if err.Error() == "sql: no rows in result set" {
+		return nil, ErrGameNotFound
+	}
+
 	if err != nil {
 		return nil, err
 	}
@@ -66,15 +71,16 @@ func (store *DBGameStore) Find(id int) (*Game, error) {
 	return game, nil
 }
 
-func (store *DBGameStore) Delete(id int) error {
-	var delted_id int
+func (store *DBGameStore) Delete(game *Game) error {
+	id := game.ID
+	var deleted_id int
 	err := store.db.QueryRow(`
 		DELETE FROM game
 		WHERE id = $1
 		RETURNING id;
 		`,
 		id,
-	).Scan(&delted_id)
+	).Scan(&deleted_id)
 
 	if err != nil {
 		return err

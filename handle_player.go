@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"github.com/julienschmidt/httprouter"
 	"strconv"
+	"fmt"
 )
 
 // Probably shouldn't even expose this form since its impossible to
@@ -15,8 +16,8 @@ func HandlePlayerNew(w http.ResponseWriter, r *http.Request, _ httprouter.Params
 func HandlePlayerCreate(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	// create player
 	// redirect player to relevant game url
-	// i.e. /game/:gameID for users,
-	// 	/game/:gameID/:playerID for non-users
+	// i.e. /games/:gameID for users,
+	// 	/games/:gameID/:playerID for non-users
 	gameID, err := strconv.Atoi(r.FormValue("gameID"))
 	if err != nil {
 		// TODO: Make this a bad request instead of 404
@@ -24,11 +25,19 @@ func HandlePlayerCreate(w http.ResponseWriter, r *http.Request, _ httprouter.Par
 		return
 	}
 
-	player := &Player{
-		Name: r.FormValue("playerName"),
-		GameID: gameID,
-		InvitationId: r.FormValue("invitationID"),
+	user := RequestUser(r)
+	player, err := NewPlayer(gameID, user, r.FormValue("name"), r.FormValue("invitationID"))
+	if validation.IsValidationError(err) {
+		RenderTemplate(w, r, "players/new", map[string]interface{}{
+			"player": player,
+		})
+		return
 	}
 
-	
+	gameURL := fmt.Sprint("/games/", player.GameID)
+	if player.UserID != 0 {
+		gameURL += fmt.Sprint("/", player.ID)
+	}
+
+	http.Redirect(w, r, gameURL, http.StatusFound)
 }

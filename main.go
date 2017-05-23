@@ -49,7 +49,7 @@ func main() {
 	router.Handle("GET", "/image/:imageID", HandleImageShow)
 	router.Handle("GET", "/user/:userID", HandleUserShow)
 	router.Handle("GET", "/games/:gameID", HandleGameShow)
-	router.Handle("GET", "/games/:gameID/:playerID", HandleGameAnonPlayerShow)
+	router.Handle("GET", "/games/:gameID/:playerID", HandleGameShow)
 	router.Handle("POST", "/players/create/:invitationID", HandlePlayerCreate)
 
 	router.ServeFiles(

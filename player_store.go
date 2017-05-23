@@ -3,7 +3,8 @@ package main
 import "database/sql"
 
 type PlayerStore interface {
-	Save(*Player) error
+	SaveWithUser(*Player) error
+	SaveWithoutUser(*Player) error
 	Find(int) (*Player, error)
 }
 
@@ -17,16 +18,36 @@ func NewDBPlayerStore(db *sql.DB) (*DBPlayerStore) {
 	return &DBPlayerStore{db: db}
 }
 
-func (store *DBPlayerStore) Save(player *Player) error {
+func (store *DBPlayerStore) SaveWithUser(player *Player) error {
 	err := store.db.QueryRow(`
 		INSERT INTO player
-		(name, game_id, usr_id)
+		(name, game_id, usr_id, invitation_id)
+		VALUES
+		($1, $2, $3, $4)
+		RETURNING id;`,
+		player.Name,
+		player.GameID,
+		player.UserID,
+		player.InvitationID,
+	).Scan(&player.ID)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (store *DBPlayerStore) SaveWithoutUser(player *Player) error {
+	err := store.db.QueryRow(`
+		INSERT INTO player
+		(name, game_id, invitation_id)
 		VALUES
 		($1, $2, $3)
 		RETURNING id;`,
 		player.Name,
 		player.GameID,
-		player.UserID,
+		player.InvitationID,
 	).Scan(&player.ID)
 
 	if err != nil {

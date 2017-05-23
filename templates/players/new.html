@@ -10,7 +10,7 @@
     <!-- Get user info (if any) from session cookie -->
     <form action="/players/new" method="POST">
         <div class="form-group">
-            <label for="newPlayerName">Email</label>
+            <label for="newPlayerName">Your name for this game</label>
             <input type="text" name="playerName" value="{{.Player.Name}}"
                    id="newPlayerName" class="form-control">
             <input type="hidden" name="gameID" value="{{.Player.GameID}}"
