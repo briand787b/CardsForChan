@@ -46,12 +46,15 @@ func HandleGameShow(w http.ResponseWriter, r *http.Request, params httprouter.Pa
 			})
 		}
 
-		HandleGameShowWithUser(w, gameID, user.ID)
+		game, err := ShowGameByUser(gameID, user.ID)
+		RenderTemplate(w, r, "games/show", map[string]interface{}{
+			"game": game,
+			"error": err,
+		})
 		return
 	}
 
 
-	HandleGameShowWithNonUser(w, gameID, playerIDParam)
 }
 
 

@@ -91,3 +91,12 @@ func (game *Game) IsValidUser() bool {
 func (game *Game) IsValidPlayer() bool {
 
 }
+
+func ShowGameByUser(gameID, userID int) (*Game, error){
+	_, err := FindGameUser(gameID, userID)
+	if err != nil {
+		return nil, err
+	}
+
+
+}
