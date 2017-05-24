@@ -93,11 +93,6 @@ func DeleteGame(game *Game) error {
 //
 //}
 
-func ShowGameByUser(gameID, userID int) (*Game, error){
-	_, err := FindGameUser(gameID, userID)
-	if err != nil {
-		return nil, err
-	}
-
-	return nil, nil
+func ShowGameByGameIDUserID(gameID, userID int) (*Game, error){
+	return globalGameStore.FindByGameIDUserID(gameID, userID)
 }

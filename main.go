@@ -35,9 +35,6 @@ func init() {
 
 	// Invitation store initialization
 	globalInvitationStore = NewDBInvitationStore(globalPgDB)
-
-	// GameUser store initialization
-	globalGameUserStore = NewDBGameUserStore(globalPgDB)
 }
 
 func main() {

@@ -19,13 +19,13 @@ func HandleGameCreate(w http.ResponseWriter, r *http.Request, _ httprouter.Param
 	game, err := NewGame(gameName, playerName, user.ID)
 	if err != nil {
 		RenderTemplate(w, r, "games/new", map[string]interface{}{
-			"error": err,
-			"gameName": gameName,
-			"playerName": playerName,
+			"Error": err,
+			"GameName": gameName,
+			"PlayerName": playerName,
 		})
 	}
 
-	gameURL := fmt.Sprint("/games/play", game.ID)
+	gameURL := fmt.Sprint("/games/play/", game.ID)
 	http.Redirect(w, r, gameURL, http.StatusFound)
 }
 
@@ -43,14 +43,16 @@ func HandleGameShow(w http.ResponseWriter, r *http.Request, params httprouter.Pa
 		user := RequestUser(r)
 		if user == nil {
 			RenderTemplate(w, r, "games/show", map[string]interface{}{
-				"error": errors.New("Unable to find user"),
+				"Error": errors.New("Unable to find user"),
+				"Game": "Not Found",
 			})
 		}
 
-		game, err := ShowGameByUser(gameID, user.ID)
+		game, err := ShowGameByGameIDUserID(gameID, user.ID)
 		RenderTemplate(w, r, "games/show", map[string]interface{}{
-			"game": game,
-			"error": err,
+			"Game": game,
+			"User": user,
+			"Error": err,
 		})
 		return
 	}

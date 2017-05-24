@@ -3,11 +3,13 @@ package main
 import (
 	"database/sql"
 	"time"
+	"fmt"
 )
 
 type GameStore interface {
 	Save(*Game) error
 	Find(int) (*Game, error)
+	FindByGameIDUserID(int, int) (*Game, error)
 	Delete(*Game) error
 	SetAdmin(int, int) error
 }
@@ -71,6 +73,30 @@ func (store *DBGameStore) Find(id int) (*Game, error) {
 	return game, nil
 }
 
+func (store DBGameStore) FindByGameIDUserID(gameID, userID int) (*Game, error) {
+	fmt.Println("gameID: ", gameID, " || userID: ", userID)
+	game := &Game{}
+	err := store.db.QueryRow(`
+		SELECT g.id, g.admin_player_id, g.name, g.is_active, g.created_at
+		FROM usr u
+		INNER JOIN player p
+		ON u.id = p.usr_id
+		INNER JOIN game g
+		ON g.id = p.game_id
+		WHERE g.id = $1 AND u.id = $2;`,
+		gameID,
+		userID,
+	).Scan(
+		&game.ID,
+		&game.AdminPlayerID,
+		&game.Name,
+		&game.IsActive,
+		&game.CreatedAt,
+	)
+
+	return game, err
+}
+
 func (store *DBGameStore) Delete(game *Game) error {
 	id := game.ID
 	var deleted_id int
@@ -102,3 +128,4 @@ func (store *DBGameStore) SetAdmin(gameID, playerID int) error {
 
 	return err
 }
+
