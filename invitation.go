@@ -55,3 +55,4 @@ func (invitation *Invitation) IsValidReceiver(user *User) bool {
 
 	return invitation.ReceiverUserID == user.ID
 }
+
