@@ -9,7 +9,7 @@
     {{if .Error}}
         <span class="text-danger"><h3>{{.Error}}</h3></span>
     {{end}}
-    <button class="btn btn-primary" >Invite People</button>
+    <a class="btn btn-primary" href="/invitations/{{.Game.ID}}">Invite People</a>
     {{range $index, $value := .}}
 
     {{end}}

@@ -84,9 +84,9 @@ func (store DBGameStore) FindByGameIDUserID(gameID, userID int) (*Game, error) {
 	)
 
 	// TODO: Find a cleaner way to handle empty result sets
-	if err.Error() == "sql: no rows in result set" {
-		return nil, nil
-	}
+	// if err.Error() == "sql: no rows in result set" {
+	//	return nil, nil
+	//}
 
 	return game, err
 }

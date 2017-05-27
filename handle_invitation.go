@@ -32,7 +32,7 @@ func HandleInvitationConsume(w http.ResponseWriter, r *http.Request, params http
 }
 
 //TODO: Make the invitation creation process be controlled through javascript
-// /invitations/new/:gameID GET
+// /invitations/:gameID GET
 func HandleInvitationNew(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	gameID, err := strconv.Atoi(params.ByName("gameID"))
 	if err != nil {
@@ -51,7 +51,7 @@ func HandleInvitationNew(w http.ResponseWriter, r *http.Request, params httprout
 	})
 }
 
-// /invitations/new/:gameID POST
+// /invitations/:gameID POST
 func HandleInvitationCreate(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 
 }

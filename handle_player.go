@@ -13,7 +13,7 @@ import (
 func HandlePlayerNew(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	RenderTemplate(w, r, "players/new", nil)
 }
-
+// /players/create/:invitationID
 func HandlePlayerCreate(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	// create player
 	// redirect player to relevant game url
